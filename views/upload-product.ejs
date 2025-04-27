@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ArtVista - Upload Product</title>
+  <style>
+    :root {
+      --primary: #4B0082;
+      --secondary: #9370DB;
+      --accent: #DDA0DD;
+      --text: #333333;
+      --light-bg: #F8F5FF;
+      --border: #E6E0F0;
+      --error: #ff3333;
+      --success: #33cc33;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-bg);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 750px;
+      padding: 2rem;
+    }
+    
+    .form-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(75, 0, 130, 0.1);
+    }
+    
+    .form-title {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+    
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+    
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    
+    .error-message {
+      color: var(--error);
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    
+    .success-message {
+      color: var(--success);
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 0.8rem 1.5rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+    
+    .btn:hover {
+      background-color: var(--secondary);
+    }
+    
+    .rating-field {
+      display: flex;
+      align-items: center;
+    }
+    
+    .rating-field input {
+      max-width: 100px;
+    }
+    
+    .rating-stars {
+      color: #FFD700;
+      margin-left: 10px;
+    }
+    
+    .url-note {
+      display: block;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="form-card">
+      <h2 class="form-title">Upload New Product</h2>
+      
+      <% if (typeof error !== 'undefined') { %>
+        <div class="error-message">**<%= error %>**</div>
+      <% } %>
+      
+      <% if (typeof success !== 'undefined') { %>
+        <div class="success-message">**<%= success %>**</div>
+      <% } %>
+      
+      <form method="POST" action="/upload-product">
+        <div class="form-group">
+          <label for="title">Product Title</label>
+          <input type="text" id="title" name="title" placeholder="Enter the name of your artwork" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Product Description</label>
+          <textarea id="description" name="description" placeholder="Describe your artwork, including medium, dimensions, inspiration..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="price">Price ($)</label>
+          <input type="number" id="price" name="price" step="0.01" min="0" placeholder="Enter the price" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="image">Image URL</label>
+          <input type="text" id="image" name="image" placeholder="Enter the URL of your product image" />
+          <span class="url-note">Please provide a direct link to your image (e.g., https://example.com/image.jpg)</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="rating">Initial Rating (Optional)</label>
+          <div class="rating-field">
+            <input type="number" id="rating" name="rating" step="0.1" min="0" max="5" placeholder="0.0 - 5.0" />
+            <div class="rating-stars">★★★★★</div>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn">Upload Product</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

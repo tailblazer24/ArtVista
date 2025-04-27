@@ -1,0 +1,73 @@
+<nav class="navbar">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/events">Events</a></li>
+    <li><a href="/cart">🛒 Cart</a></li>
+    
+    <!-- Commenting out or removing user-based links for now -->
+    <!--
+    <% if (user) { %>
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/logout">Logout</a></li>
+    <% } else { %>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/signup">Sign Up</a></li>
+    <% } %>
+    -->
+
+    <!-- Temporary fixed links (optional) -->
+    <li><a href="/login">Login</a></li>
+    <li><a href="/signup">Sign Up</a></li>
+  </ul>
+</nav>
+
+
+<style>
+  .navbar {
+    background: #ffffff;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links li a:hover {
+    color: #000;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+    /* Add burger icon if needed */
+  }
+</style>

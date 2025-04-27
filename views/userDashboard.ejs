@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard - ArtVista</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #ff3c3c;
+    }
+    .navbar a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    .dashboard-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .profile-initials {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: bold;
+      color: #fff;
+      margin-right: 2rem;
+    }
+    .profile-info h2 {
+      margin: 0;
+      color: #222;
+    }
+    .profile-info p {
+      margin: 0.3rem 0;
+      color: #666;
+    }
+    .orders-section h3 {
+      margin-bottom: 1rem;
+      color: #444;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      padding: 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f6f8;
+      color: #333;
+    }
+    .footer {
+      background-color: #222;
+      color: #eee;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Art<span style="color:#ff3c3c">Vista</span></div>
+    <div>
+      <a href="/">Home</a>
+      <a href="/products">Collections</a>
+      <a href="/artists">Artists</a>
+      <a href="/exhibitions">Exhibitions</a>
+      <a href="/about">About</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Dashboard -->
+  <div class="dashboard-container">
+    <div class="profile-section">
+      <div class="profile-initials">
+        <%= user.first_name.charAt(0).toUpperCase() + user.last_name.charAt(0).toUpperCase() %>
+      </div>
+      <div class="profile-info">
+        <h2><%= user.first_name %> <%= user.last_name %></h2>
+        <p>Email: <%= user.email %></p>
+        <p>Phone: <%= user.phone_number %></p>
+        <p>Location: <%= user.city %>, <%= user.state %>, <%= user.country %> - <%= user.postcode %></p>
+        <p>Role: <%= user.role %></p>
+      </div>
+    </div>
+
+    <div class="orders-section">
+      <h3>Your Orders</h3>
+      <% if (orders.length > 0) { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Total (₹)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(order => { %>
+              <tr>
+                <td><%= order.id %></td>
+                <td><%= new Date(order.created_at).toLocaleDateString() %></td>
+                <td><%= parseFloat(order.total_amount).toFixed(2) %></td>
+                <td>Completed</td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No orders placed yet.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2025 ArtVista. All rights reserved.
+  </footer>
+
+</body>
+</html>

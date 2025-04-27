@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product.title %> | ArtVista</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3a1c71;
+      --secondary-color: #d76d77;
+      --accent-color: #ffaf7b;
+      --dark-text: #333333;
+      --light-text: #777777;
+      --lightest-bg: #f9f9f9;
+      --light-bg: #f1f1f1;
+      --white: #ffffff;
+      --border-radius: 8px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--dark-text);
+      background-color: var(--lightest-bg);
+      line-height: 1.6;
+    }
+    
+    /* Header */
+    .header {
+      background-color: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-menu a {
+      text-decoration: none;
+      color: var(--dark-text);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-menu a:hover {
+      color: var(--secondary-color);
+    }
+    
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    .search-bar {
+      position: relative;
+    }
+    
+    .search-bar input {
+      padding: 0.6rem 1rem 0.6rem 2.5rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 50px;
+      outline: none;
+      width: 220px;
+      font-size: 0.9rem;
+    }
+    
+    .search-bar i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--light-text);
+    }
+    
+    .cart-btn {
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--dark-text);
+    }
+    
+    .cart-count {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background-color: var(--secondary-color);
+      color: var(--white);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    
+    /* Main Content */
+    .main-container {
+      max-width: 1280px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+    
+    .breadcrumb {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--light-text);
+    }
+    
+    .breadcrumb a {
+      color: var(--light-text);
+      text-decoration: none;
+    }
+    
+    .breadcrumb a:hover {
+      color: var(--secondary-color);
+      text-decoration: underline;
+    }
+    
+    /* Product Layout */
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    
+    /* Image Gallery */
+    .product-gallery {
+      padding: 2rem;
+      background-color: var(--white);
+    }
+    
+    .main-image {
+      width: 100%;
+      height: 400px;
+      border-radius: var(--border-radius);
+      object-fit: cover;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    
+    .main-image:hover {
+      transform: scale(1.02);
+    }
+    
+    .thumbnail-container {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .thumbnail {
+      width: 80px;
+      height: 80px;
+      border-radius: 5px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    
+    .thumbnail:hover {
+      border-color: var(--secondary-color);
+    }
+    
+    /* Product Info */
+    .product-info {
+      padding: 2rem;
+    }
+    
+    .product-title {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    .artist-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .artist-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--light-bg);
+    }
+    
+    .artist-name {
+      color: var(--secondary-color);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .artist-name:hover {
+      text-decoration: underline;
+    }
+    
+    .price-container {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .current-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    
+    .original-price {
+      font-size: 1.2rem;
+      text-decoration: line-through;
+      color: var(--light-text);
+    }
+    
+    .discount-badge {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .rating-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .stars {
+      color: #f8ce0b;
+    }
+    
+    .review-count {
+      color: var(--light-text);
+      text-decoration: none;
+    }
+    
+    .review-count:hover {
+      text-decoration: underline;
+      color: var(--secondary-color);
+    }
+    
+    .description {
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    
+    .frame-selection {
+      margin-bottom: 1.5rem;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    .options-container {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .frame-option {
+      width: 70px;
+      height: 70px;
+      border-radius: 5px;
+      border: 2px solid #e0e0e0;
+      padding: 5px;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    
+    .frame-option:hover, .frame-option.active {
+      border-color: var(--secondary-color);
+    }
+    
+    .promo-box {
+      background: linear-gradient(to right, #e0f7fa, #f3e5f5);
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .promo-icon {
+      font-size: 2rem;
+      color: var(--secondary-color);
+    }
+    
+    .promo-text {
+      font-size: 0.95rem;
+    }
+    
+    .promo-code {
+      font-weight: 700;
+      letter-spacing: 1px;
+      background-color: rgba(255, 255, 255, 0.5);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: var(--border-radius);
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .primary-btn {
+      background-color: var(--primary-color);
+      color: var(--white);
+      flex: 2;
+    }
+    
+    .primary-btn:hover {
+      background-color: #2a1356;
+    }
+    
+    .secondary-btn {
+      background-color: var(--white);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      flex: 1;
+    }
+    
+    .secondary-btn:hover {
+      background-color: rgba(58, 28, 113, 0.08);
+    }
+    
+    /* Tabs Section */
+    .product-tabs {
+      margin-top: 3rem;
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    
+    .tabs-header {
+      display: flex;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .tab {
+      padding: 1rem 2rem;
+      cursor: pointer;
+      font-weight: 600;
+      position: relative;
+    }
+    
+    .tab.active {
+      color: var(--primary-color);
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--primary-color);
+    }
+    
+    .tab-content {
+      padding: 2rem;
+    }
+    
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .spec-item {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .spec-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(58, 28, 113, 0.1);
+      border-radius: 50%;
+      color: var(--primary-color);
+    }
+    
+    .spec-text h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--primary-color);
+    }
+    
+    .spec-text p {
+      font-size: 0.9rem;
+      color: var(--light-text);
+    }
+    
+    /* Features */
+    .features-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .feature-checkmark {
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    
+    /* Similar Products */
+    .similar-products {
+      margin-top: 3rem;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .section-heading {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+    
+    .view-all {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .view-all:hover {
+      text-decoration: underline;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .product-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--dark-text);
+    }
+    
+    .card-artist {
+      color: var(--light-text);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .card-price {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    
+    /* For mobile responsiveness */
+    @media (max-width: 992px) {
+      .product-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      
+      .nav-menu {
+        width: 100%;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .nav-right {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .search-bar input {
+        width: 100%;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .spec-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="/" class="logo">ArtVista</a>
+      <div class="nav-menu">
+        <a href="/">Home</a>
+        <a href="/products">Collections</a>
+        <a href="/artists">Artists</a>
+        <a href="/exhibitions">Exhibitions</a>
+        <a href="/about">About</a>
+      </div>
+      <div class="nav-right">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search artwork...">
+        </div>
+        <a href="/cart"><button class="cart-btn">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">3</span>
+        </button></a>
+        <a href="/signup" class="btn secondary-btn" style="padding: 0.5rem 1rem;">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/collections">Collections</a>
+      <span>/</span>
+      <span><%= product.title %></span>
+    </div>
+
+    <!-- Product Info -->
+    <section class="product-layout">
+      <!-- Product Gallery -->
+      <div class="product-gallery">
+        <img src="<%= product.image %>" alt="<%= product.title %>" class="main-image">
+        <div class="thumbnail-container">
+          <img src="<%= product.image %>" alt="Thumbnail" class="thumbnail">
+          <!-- Add additional thumbnails if available -->
+        </div>
+      </div>
+
+      <!-- Product Details -->
+      <div class="product-info">
+        <h1 class="product-title"><%= product.title %></h1>
+        
+        <div class="artist-info">
+          <div class="artist-avatar"></div>
+          <a href="#" class="artist-name"><%= product.artist_name || 'Unknown Artist' %></a>
+        </div>
+        
+        <div class="price-container">
+          <span class="current-price">₹<%= product.price %></span>
+          <span class="original-price">₹<%= (product.price * 1.5).toFixed(0) %></span>
+          <span class="discount-badge">Save 30%</span>
+        </div>
+        
+        <div class="rating-container">
+          <div class="stars">
+            <% for(let i=0; i < Math.floor(product.rating); i++) { %>
+              <i class="fas fa-star"></i>
+            <% } %>
+            <% if(product.rating % 1 !== 0) { %>
+              <i class="fas fa-star-half-alt"></i>
+            <% } %>
+          </div>
+          <span><%= product.rating %>/5</span>
+          <a href="#reviews" class="review-count">(42 Reviews)</a>
+        </div>
+        
+        <p class="description"><%= product.description || 'This stunning artwork brings vivid colors and dynamic composition to any space. Created using premium materials, this piece showcases the artist\'s unique perspective and technical mastery.' %></p>
+        
+        <div class="frame-selection">
+          <h3 class="section-title">Select Frame Type</h3>
+          <div class="options-container">
+            <div class="frame-option active">
+              <img src="https://placehold.co/60x60/181818/FFFFFF?text=No" alt="No Frame">
+            </div>
+            <div class="frame-option">
+              <img src="https://placehold.co/60x60/8B4513/FFFFFF?text=Wood" alt="Wooden Frame">
+            </div>
+            <div class="frame-option">
+              <img src="https://placehold.co/60x60/333333/FFFFFF?text=Black" alt="Black Frame">
+            </div>
+            <div class="frame-option">
+              <img src="https://placehold.co/60x60/C0C0C0/FFFFFF?text=Silver" alt="Silver Frame">
+            </div>
+          </div>
+        </div>
+        
+        <div class="promo-box">
+          <div class="promo-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <div class="promo-text">
+            Special April Discount: Use code <span class="promo-code">ART10</span> for 10% off your order!
+          </div>
+        </div>
+        
+        <div class="action-buttons">
+          <form action="/add-to-cart" method="POST" style="flex: 2;">
+            <input type="hidden" name="productId" value="<%= product._id %>">
+            <form action="/add-to-cart" method="POST">
+              <input type="hidden" name="product_id" value="<%= product.id %>">
+              <input type="hidden" name="quantity" value="3"> <!-- You can make this dynamic later -->
+            
+              <button type="submit" class="btn primary-btn">
+                <i class="fas fa-shopping-cart"></i> ADD TO CART
+              </button>
+            </form>
+            
+          </form>
+          <button class="btn secondary-btn">
+            <i class="fas fa-ruler-combined"></i> CUSTOM SIZE
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Tabs -->
+    <section class="product-tabs">
+      <div class="tabs-header">
+        <div class="tab active">Specifications</div>
+        <div class="tab">Features</div>
+        <div class="tab">Shipping</div>
+        <div class="tab">Reviews</div>
+      </div>
+      
+      <div class="tab-content">
+        <div class="spec-grid">
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i class="fas fa-palette"></i>
+            </div>
+            <div class="spec-text">
+              <h4>Medium</h4>
+              <p>Acrylic on Canvas</p>
+            </div>
+          </div>
+          
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i class="fas fa-ruler-combined"></i>
+            </div>
+            <div class="spec-text">
+              <h4>Dimensions</h4>
+              <p>24" × 36" (60.96cm × 91.44cm)</p>
+            </div>
+          </div>
+          
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i class="fas fa-weight-hanging"></i>
+            </div>
+            <div class="spec-text">
+              <h4>Weight</h4>
+              <p>2.5 kg with standard framing</p>
+            </div>
+          </div>
+          
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="spec-text">
+              <h4>Created</h4>
+              <p>2024</p>
+            </div>
+          </div>
+          
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i class="fas fa-signature"></i>
+            </div>
+            <div class="spec-text">
+              <h4>Authenticity</h4>
+              <p>Signed by artist, includes certificate</p>
+            </div>
+          </div>
+          
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="spec-text">
+              <h4>Care</h4>
+              <p>Avoid direct sunlight, dust with soft cloth</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Similar Products -->
+    <section class="similar-products">
+      <div class="section-header">
+        <h2 class="section-heading">You May Also Like</h2>
+        <a href="/products" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+      </div>
+    
+      <div class="products-grid">
+        <% similarProducts.forEach(item => { %>
+          <div class="product-card">
+            <img src="<%= item.image %>" alt="<%= item.title %>" class="card-image">
+            <div class="card-body">
+              <h3 class="card-title"><%= item.title %></h3>
+              <p class="card-artist">by Artist ID: <%= item.artist_id %></p>
+              <p class="card-price">₹<%= item.price %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+    
+  </main>
+</body>
+</html>

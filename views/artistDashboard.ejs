@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArtVista - Artist Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+     .navbar {
+      background-color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #ff3c3c;
+    }
+    .navbar a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    .footer {
+      background-color: #222;
+      color: #eee;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="navbar">
+    <div class="logo">Art<span style="color:#ff3c3c">Vista</span></div>
+    <div>
+      <a href="/">Home</a>
+      <a href="/products">Collections</a>
+      <a href="/artists">Artists</a>
+      <a href="/exhibitions">Exhibitions</a>
+      <a href="/about">About</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <main class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- Sidebar -->
+      <aside class="w-full md:w-1/4">
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="flex items-center space-x-4 mb-6">
+            <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center text-white text-2xl">
+              <%= artist.first_name.charAt(0) %><%= artist.last_name.charAt(0) %>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold"><%= artist.first_name %> <%= artist.last_name %></h2>
+              <p class="text-purple-600"><%= artist.artist_type === 'art_dealer' ? 'Art Dealer' : 'Artist' %></p>
+            </div>
+          </div>
+
+          <nav class="mb-6">
+            <ul class="space-y-2">
+              <li>
+                <a href="#profile" class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 py-2 px-3 rounded hover:bg-purple-50">
+                  <i class="fas fa-user"></i>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li>
+                <a href="#exhibitions" class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 py-2 px-3 rounded hover:bg-purple-50">
+                  <i class="fas fa-palette"></i>
+                  <span>Exhibitions</span>
+                </a>
+              </li>
+              <li>
+                <a href="#orders" class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 py-2 px-3 rounded hover:bg-purple-50">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span>Orders</span>
+                </a>
+              </li>
+              <li>
+                <a href="/createExhibition" class="flex items-center space-x-2 text-purple-600 py-2 px-3 rounded bg-purple-50 hover:bg-purple-100">
+                  <i class="fas fa-plus"></i>
+                  <span>Create Exhibition</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <hr class="my-6">
+
+          <div class="space-y-4">
+            <h3 class="font-semibold text-gray-700">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="/settings" class="flex items-center space-x-2 text-gray-700 hover:text-purple-600">
+                  <i class="fas fa-cog"></i>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li>
+                <a href="/help" class="flex items-center space-x-2 text-gray-700 hover:text-purple-600">
+                  <i class="fas fa-question-circle"></i>
+                  <span>Help & Support</span>
+                </a>
+              </li>
+              <li>
+                <a href="/logout" class="flex items-center space-x-2 text-gray-700 hover:text-purple-600">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="w-full md:w-3/4">
+        <!-- Profile Section -->
+        <section id="profile" class="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Profile Information</h2>
+            <a href="/editProfile" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
+              <i class="fas fa-edit mr-2"></i>Edit Profile
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="font-semibold text-gray-700 mb-4">Contact Information</h3>
+              <ul class="space-y-3">
+                <li class="flex items-start">
+                  <span class="w-24 text-gray-500">Email:</span>
+                  <span class="text-gray-800"><%= artist.email %></span>
+                </li>
+                <li class="flex items-start">
+                  <span class="w-24 text-gray-500">Phone:</span>
+                  <span class="text-gray-800"><%= artist.phone_number || 'Not provided' %></span>
+                </li>
+                <li class="flex items-start">
+                  <span class="w-24 text-gray-500">Location:</span>
+                  <span class="text-gray-800">
+                    <%= [artist.city, artist.state, artist.country].filter(Boolean).join(', ') || 'Not provided' %>
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-semibold text-gray-700 mb-4">Artist Information</h3>
+              <ul class="space-y-3">
+                <li class="flex items-start">
+                  <span class="w-24 text-gray-500">Portfolio:</span>
+                  <% if (artist.portfolio_link) { %>
+                    <a href="<%= artist.portfolio_link %>" target="_blank" class="text-purple-600 hover:underline">
+                      <i class="fas fa-external-link-alt mr-1"></i>View Portfolio
+                    </a>
+                  <% } else { %>
+                    <span class="text-gray-800">Not provided</span>
+                  <% } %>
+                </li>
+                <li class="flex items-start">
+                  <span class="w-24 text-gray-500">Social:</span>
+                  <% if (artist.social_media_link) { %>
+                    <a href="<%= artist.social_media_link %>" target="_blank" class="text-purple-600 hover:underline">
+                      <i class="fas fa-external-link-alt mr-1"></i>View Profile
+                    </a>
+                  <% } else { %>
+                    <span class="text-gray-800">Not provided</span>
+                  <% } %>
+                </li>
+                <li class="flex items-start">
+                  <span class="w-24 text-gray-500">Type:</span>
+                  <span class="text-gray-800">
+                    <%= artist.artist_type === 'art_dealer' ? 'Art Dealer' : 'Artist' %>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Exhibitions Section -->
+        <section id="exhibitions" class="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">My Exhibitions</h2>
+            <a href="/createExhibition" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
+              <i class="fas fa-plus mr-2"></i>Create New
+            </a>
+          </div>
+
+          <% if (exhibitions && exhibitions.length > 0) { %>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="text-left bg-gray-50">
+                    <th class="py-3 px-4 border-b">Title</th>
+                    <th class="py-3 px-4 border-b">Location</th>
+                    <th class="py-3 px-4 border-b">Dates</th>
+                    <th class="py-3 px-4 border-b">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% exhibitions.forEach(exhibition => { %>
+                    <tr class="hover:bg-gray-50">
+                      <td class="py-3 px-4 border-b">
+                        <a href="/exhibitions/<%= exhibition.id %>" class="font-medium text-purple-600 hover:underline">
+                          <%= exhibition.title %>
+                        </a>
+                      </td>
+                      <td class="py-3 px-4 border-b"><%= exhibition.location %></td>
+                      <td class="py-3 px-4 border-b">
+                        <%= new Date(exhibition.start_date).toLocaleDateString() %> -
+                        <%= new Date(exhibition.end_date).toLocaleDateString() %>
+                      </td>
+                      <td class="py-3 px-4 border-b">
+                        <div class="flex space-x-2">
+                          <a href="/exhibitions/<%= exhibition.id %>/edit" class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                          <a href="/exhibitions/<%= exhibition.id %>" class="text-green-600 hover:text-green-800">
+                            <i class="fas fa-eye"></i>
+                          </a>
+                          <form action="/exhibitions/<%= exhibition.id %>/delete" method="POST" class="inline" 
+                                onsubmit="return confirm('Are you sure you want to delete this exhibition?')">
+                            <button type="submit" class="text-red-600 hover:text-red-800">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="text-center py-8">
+              <div class="text-gray-400 mb-4">
+                <i class="fas fa-palette text-5xl"></i>
+              </div>
+              <h3 class="text-lg font-medium text-gray-700 mb-2">No exhibitions yet</h3>
+              <p class="text-gray-500 mb-4">You haven't created any exhibitions. Start showcasing your art today!</p>
+              <a href="/createExhibition" class="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
+                Create Your First Exhibition
+              </a>
+            </div>
+          <% } %>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">My Orders</h2>
+
+          <% if (orders && orders.length > 0) { %>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="text-left bg-gray-50">
+                    <th class="py-3 px-4 border-b">Order ID</th>
+                    <th class="py-3 px-4 border-b">Date</th>
+                    <th class="py-3 px-4 border-b">Amount</th>
+                    <th class="py-3 px-4 border-b">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% orders.forEach(order => { %>
+                    <tr class="hover:bg-gray-50">
+                      <td class="py-3 px-4 border-b">#<%= order.id %></td>
+                      <td class="py-3 px-4 border-b">
+                        <%= new Date(order.created_at).toLocaleDateString() %>
+                      </td>
+                      <td class="py-3 px-4 border-b">$<%= parseFloat(order.total_amount).toFixed(2) %></td>
+                      <td class="py-3 px-4 border-b">
+                        <a href="/orders/<%= order.id %>" class="text-purple-600 hover:underline">
+                          <i class="fas fa-eye mr-1"></i>View
+                        </a>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="text-center py-8">
+              <div class="text-gray-400 mb-4">
+                <i class="fas fa-shopping-bag text-5xl"></i>
+              </div>
+              <h3 class="text-lg font-medium text-gray-700 mb-2">No orders yet</h3>
+              <p class="text-gray-500">You haven't made any purchases. Visit our marketplace to discover amazing artworks!</p>
+            </div>
+          <% } %>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    &copy; 2025 ArtVista. All rights reserved.
+  </footer>
+  
+
+  <script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 20,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

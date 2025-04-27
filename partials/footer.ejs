@@ -1,0 +1,40 @@
+<!-- footer.ejs -->
+<footer class="footer">
+  <div class="footer-container">
+    <p>&copy; <%= new Date().getFullYear() %> ArtZone. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #f2f2f2;
+    padding: 1rem 2rem;
+    margin-top: 3rem;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+  }
+
+  .footer-links {
+    margin-top: 0.5rem;
+  }
+
+  .footer-links a {
+    margin: 0 1rem;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+</style>
